@@ -332,7 +332,7 @@ def _remove_github_directory(repo_path: Path, owner: str, repo_name: str, token:
 
 
 def import_repository(
-    template_dir: str, github_token: str, target_owner: str, private: bool = False
+    template_dir: str, github_token: str, target_owner: str, private: bool = True
 ) -> str:
     """Import repository from a local template directory to GitHub."""
 

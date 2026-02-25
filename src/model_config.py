@@ -281,6 +281,12 @@ class ModelConfig:
             "base_url_var": "ARK_BASE_URL",
             "litellm_input_model_name": "openai/doubao-seed-2-0-pro-260215",
         },
+        "glm-4-7": {
+            "provider": "volcengine",
+            "api_key_var": "ARK_API_KEY",
+            "base_url_var": "ARK_BASE_URL",
+            "litellm_input_model_name": "openai/glm-4-7-251222",
+        },
     }
 
     def __init__(self, model_name: str):

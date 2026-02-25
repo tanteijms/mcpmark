@@ -117,9 +117,20 @@ irm https://pixi.sh/install.ps1 | iex
 
 安装完后**重启终端**（PowerShell / CMD），验证：
 
-```bash
+```powershell
 pixi --version
 ```
+
+> **Windows 特别说明**：Python 在 Windows 上默认使用 GBK 编码读取文件，会导致含中文注释的 `meta.json` 加载失败。需要设置以下环境变量（建议永久写入系统变量）：
+>
+> ```powershell
+> # 永久写入（推荐）
+> [System.Environment]::SetEnvironmentVariable("PYTHONUTF8", "1", "User")
+> # 重启终端后生效
+>
+> # 或仅当前会话临时设置（CMD 用 set PYTHONUTF8=1）
+> $env:PYTHONUTF8 = "1"
+> ```
 
 #### pixi 是怎么管理环境的
 
@@ -206,6 +217,19 @@ docker run -d \
 docker exec mcpmark-postgres psql -U postgres -c "SELECT version();"
 ```
 
+> **Windows Docker 拉取失败？** 国内访问 Docker Hub 可能超时。解决方案：
+> 1. 打开 Docker Desktop → ⚙️ → **Docker Engine**，添加镜像源后 Apply & restart：
+> ```json
+> {
+>   "registry-mirrors": [
+>     "https://mirrors.aliyun.com",
+>     "https://mirror.ccs.tencentyun.com",
+>     "https://docker.mirrors.tuna.tsinghua.edu.cn"
+>   ]
+> }
+> ```
+> 2. 如果镜像源仍失败，在 Docker Desktop → ⚙️ → **Proxies** 中配置 Clash 代理（HTTP/HTTPS 均填 `http://127.0.0.1:7890`），Apply & restart 后重试。
+
 框架运行时需要本地有 `pg_restore` 命令来恢复数据库备份。Docker 容器里有，但框架是在宿主机上通过 subprocess 调用的，所以**宿主机也需要安装 PostgreSQL 客户端工具**：
 
 **Linux:**
@@ -224,11 +248,15 @@ source ~/.zshrc
 
 **Windows:**
 
-从 https://www.postgresql.org/download/windows/ 下载安装包，安装时**只勾选 Command Line Tools**，安装完成后把 `C:\Program Files\PostgreSQL\16\bin` 加入系统 PATH。
+从 https://www.postgresql.org/download/windows/ 下载安装包，安装时**只勾选 Command Line Tools**，安装完成后把以下路径加入系统 PATH（版本号按实际调整）：
 
-验证：
+```
+C:\Program Files\PostgreSQL\16\bin
+```
 
-```bash
+验证（需重启终端）：
+
+```powershell
 pg_restore --version
 ```
 
@@ -292,15 +320,22 @@ sudo usermod -aG docker $USER   # 免 sudo，需重新登录生效
 
 #### 6.2 构建 MCPMark Docker 镜像
 
+构建前需要先拉取基础镜像（国内网络建议先确保 Docker 代理或镜像源已配置好）：
+
+```bash
+# 先拉基础镜像（如果之前 Docker Hub 拉取失败过，先确认网络通畅）
+docker pull python:3.12-slim
+docker pull postgres:16
+```
+
+然后构建（预计 10-15 分钟）：
+
 ```bash
 # Linux / macOS
 chmod +x build-docker.sh
 ./build-docker.sh
 
-# Windows（使用 Git Bash 或 WSL）
-bash build-docker.sh
-
-# 或直接使用 docker 命令（全平台通用）
+# Windows PowerShell / CMD
 docker build -t evalsysorg/mcpmark:latest .
 ```
 
@@ -310,12 +345,17 @@ docker build -t evalsysorg/mcpmark:latest .
 docker images evalsysorg/mcpmark
 ```
 
+> **注意**：GitHub 任务会创建临时私有仓库进行评测，评测结束后自动删除。必须使用私有仓库，否则模板中的 `@username` mention 会骚扰原始仓库作者。本项目已默认强制 `private=True`。
+
 #### 6.3 GitHub PAT
 
 创建一个 Personal Access Token：
 
 1. 前往 https://github.com/settings/tokens → **Generate new token (classic)**
-2. 勾选权限：`repo`（Full control）、`admin:org`（如果使用组织）
+2. 勾选以下权限（缺任一项会导致对应步骤失败）：
+   - `repo`（Full control）— 创建/删除仓库、push 代码
+   - `workflow` — push 含 `.github/workflows/` 的代码（**必须勾选，否则会报 `refusing to allow a PAT to create or update workflow`**）
+   - `admin:org`（如果使用组织账号）
 3. 复制生成的 token
 
 #### 6.4 GitHub 评测组织
@@ -342,17 +382,23 @@ Playwright 任务使用浏览器访问网页并提取信息，需要安装 Chrom
 
 #### 安装浏览器
 
-需要 Node.js（用于 npx 命令）：
+**推荐通过 pixi 安装**（使用项目内置的 playwright 版本，避免版本冲突）：
 
 ```bash
-node --version   # 确认已安装，需要 >= 18
+# Linux / macOS
+pixi run python -m playwright install chromium
+pixi run python -m playwright install-deps chromium   # Linux 需要
 
-# 安装 Chromium
-npx -y playwright install chromium
-
-# Linux 还需要安装系统依赖
-npx -y playwright install-deps chromium
+# Windows PowerShell
+pixi run python -m playwright install chromium
 ```
+
+> **Windows 下载超时？** Chromium 浏览器从 Google 服务器下载，国内可能超时。设置代理后重试：
+>
+> ```powershell
+> $env:HTTPS_PROXY = "http://127.0.0.1:7890"
+> pixi run python -m playwright install chromium
+> ```
 
 #### .mcp_env 配置
 
@@ -750,8 +796,11 @@ file-1-v1 (75%) = postgre-1 (75%) > github-v3 (50%) > file-1-v2 (25%) = file-3 (
 | `pixi: command not found` | 安装后需重启终端。Linux: `source ~/.bashrc`，macOS: `source ~/.zshrc` |
 | `could not find pixi.toml` | 必须在仓库根目录（含 `pyproject.toml`）下执行 `pixi run` |
 | `pg_restore: command not found` | 需安装 PostgreSQL 客户端工具（见上方 PostgreSQL 环境搭建） |
-| Playwright 浏览器超时 | 提前运行 `npx -y playwright install chromium`（Linux 还需 `install-deps`） |
-| Docker 镜像构建失败 | 确认 Docker Desktop 已启动，网络通畅 |
+| Playwright 浏览器下载超时 | 设代理：`$env:HTTPS_PROXY="http://127.0.0.1:7890"`，再执行 `pixi run python -m playwright install chromium` |
+| Docker 拉取镜像超时（国内） | Docker Engine 中配置镜像源（阿里/腾讯），或在 Proxies 中填入 Clash 代理地址 |
+| Docker 镜像构建失败 | 确认 Docker Desktop 已启动且基础镜像已拉取（`docker pull python:3.12-slim`） |
+| **[Windows]** `meta.json` GBK 编码错误 | 设置 `PYTHONUTF8=1`，建议永久写入：`[System.Environment]::SetEnvironmentVariable("PYTHONUTF8","1","User")` |
+| **[Windows]** CMD 中无法执行 `$env:` | CMD 用 `set PYTHONUTF8=1`，PowerShell 用 `$env:PYTHONUTF8="1"` |
 
 ### 任务运行相关
 
@@ -760,7 +809,8 @@ file-1-v1 (75%) = postgre-1 (75%) > github-v3 (50%) > file-1-v2 (25%) = file-3 (
 | `Tasks passed: 0/0` | `--tasks` 路径不对，检查 `meta.json` 中的 `category_id/task_id` 是否与目录一致 |
 | Filesystem 初始文件找不到 | `test_environments/{category_id}/` 目录不存在或为空 |
 | PostgreSQL `current transaction is aborted` | verify.py 中需设置 `conn.autocommit = True` |
-| GitHub `Cannot import template to a public repository` | 修改 `github_state_manager.py` 强制 `private=True` |
+| GitHub `Cannot import template to a public repository` | 已在框架中修复（强制 `private=True`），无需手动处理 |
+| GitHub `refusing to allow a PAT to create workflow without workflow scope` | PAT 缺少 `workflow` 权限，去 https://github.com/settings/tokens 编辑 token 勾选 `workflow` |
 | GitHub verify.py 读不到 Token | 框架传的环境变量名是 `MCP_GITHUB_TOKEN`，不是 `GITHUB_TOKEN` |
 | SSH 断开进程被杀 | 使用 `nohup ... > log/run.log 2>&1 &` 后台运行 |
 
