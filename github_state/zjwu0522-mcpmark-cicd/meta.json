@@ -1,0 +1,8 @@
+{
+  "owner": "zjwu0522",
+  "repo": "mcpmark-cicd",
+  "default_branch": "main",
+  "pr_head_refs": [
+    "main"
+  ]
+}

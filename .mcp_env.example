@@ -1,0 +1,41 @@
+# ============================================
+# MCPMark 环境配置（复制本文件为 .mcp_env 并填入实际值）
+# ============================================
+
+# ============================================
+# [必填] LLM 配置 - OpenRouter
+# 注册地址：https://openrouter.ai/
+# ============================================
+OPENAI_API_KEY="sk-or-v1-your-openrouter-api-key"
+OPENAI_BASE_URL="https://openrouter.ai/api/v1"
+OPENROUTER_API_KEY="sk-or-v1-your-openrouter-api-key"
+
+# ============================================
+# [Filesystem 任务] 文件系统配置
+# 无需外部服务，开箱即用
+# ============================================
+FILESYSTEM_TEST_ROOT="./test_environments"
+
+# ============================================
+# [Playwright 任务] 浏览器配置
+# 需提前安装：npx -y playwright install chromium
+# ============================================
+PLAYWRIGHT_BROWSER="chromium"
+PLAYWRIGHT_HEADLESS="True"
+
+# ============================================
+# [PostgreSQL 任务] 数据库配置
+# 需本地运行 PostgreSQL 并导入 Chinook 数据库
+# ============================================
+POSTGRES_HOST="localhost"
+POSTGRES_PORT="5432"
+POSTGRES_USERNAME="postgres"
+POSTGRES_PASSWORD="your_password"
+
+# ============================================
+# [GitHub 任务] GitHub 配置
+# 需创建 PAT：https://github.com/settings/tokens
+# 评测组织需有创建仓库权限
+# ============================================
+GITHUB_TOKENS="github_pat_your_personal_access_token"
+GITHUB_EVAL_ORG="your-github-org"

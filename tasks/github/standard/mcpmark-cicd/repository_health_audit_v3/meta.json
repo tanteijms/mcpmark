@@ -1,0 +1,25 @@
+{
+  "task_id": "repository_health_audit_v3",
+  "task_name": "Repository Health Audit & Remediation (v3 - Simplified PR)",
+  "category_id": "mcpmark-cicd",
+  "category_name": "MCPMark CI/CD",
+  "description": "Conduct a structured repository health audit: create 8 labels, 5 audit issues with correct labels, a documentation remediation PR with 3 new files, a summary issue cross-referencing all findings, and remediation comments on each issue. (v3: milestone removed, PR issue-reference requirement removed)",
+  "author": "",
+  "created_at": "2026-02-13",
+  "difficulty": "L3",
+  "tags": [
+    "repository management",
+    "issue triage",
+    "pull request workflow",
+    "label management",
+    "cross-referencing",
+    "documentation"
+  ],
+  "mcp": ["github"],
+  "meta_data": {
+    "stateType": "url",
+    "stateContent": null,
+    "stateUrl": "https://github.com/mcpmark-source/mcpmark-cicd",
+    "stateOriginalUrl": null
+  }
+}

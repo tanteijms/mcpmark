@@ -1,0 +1,26 @@
+Meeting Notes - December 2025 Retrospective
+
+Date: December 18, 2025
+Attendees: Full Engineering Team
+
+What Went Well:
+- Successfully launched v2.3 with zero downtime
+- Reduced API latency by 35% through caching improvements
+- Onboarded 3 new team members smoothly
+- Completed security audit with no critical findings
+
+What Could Improve:
+- Sprint planning still overcommitting (avg 120% of capacity)
+- Cross-team communication gaps on shared services
+- Documentation not keeping pace with code changes
+- Test coverage dropped from 85% to 78%
+
+Action Items for Q1 2026:
+- Implement capacity planning tool (Alice, by Jan 31)
+- Weekly cross-team sync meetings (Bob, starting Jan 6)
+- Documentation sprint in Week 3 (Carol, Jan 13-17)
+- Hire dedicated QA engineer (David, post immediately)
+
+Holiday Schedule:
+- Office closed Dec 24 - Jan 1
+- On-call rotation: Bob (Dec 24-27), Carol (Dec 28-31)

@@ -1,0 +1,7 @@
+Attendees: Alice, Bob, Charlie
+Date: 2026-01-20
+
+Action Items:
+1. Alice to finalize Q1 report by Friday
+2. Bob to schedule client demo
+3. Charlie to review security audit findings

@@ -1,0 +1,6 @@
+order_id,customer,product,amount,status
+ORD-001,Acme Corp,Enterprise License,15000.00,completed
+ORD-002,TechStart Inc,Basic Plan,2500.00,completed
+ORD-003,Global Systems,Premium Support,8750.00,pending
+ORD-004,DataFlow Ltd,Enterprise License,15000.00,completed
+ORD-005,CloudNine,Basic Plan,2500.00,cancelled

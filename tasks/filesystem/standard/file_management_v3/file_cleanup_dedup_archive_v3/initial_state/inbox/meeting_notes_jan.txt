@@ -1,0 +1,23 @@
+Meeting Notes - January 2026 Planning Session
+
+Date: January 8, 2026
+Attendees: Alice, Bob, Carol, David
+
+Agenda:
+1. Q4 2025 Review
+   - Revenue targets met (102% of goal)
+   - Customer satisfaction improved to 4.6/5.0
+   - Three new enterprise clients onboarded
+
+2. Q1 2026 Priorities
+   - Launch platform migration project
+   - Hire 3 additional engineers
+   - Complete SOC 2 compliance audit
+
+3. Action Items
+   - Alice: Draft migration plan by Jan 15
+   - Bob: Prepare marketing campaign for Q1
+   - Carol: Set up new CI/CD pipeline
+   - David: Schedule client review meetings
+
+Next meeting: February 5, 2026

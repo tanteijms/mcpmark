@@ -1,0 +1,33 @@
+{
+  "task_id": "file_cleanup_dedup_archive_v3",
+  "task_name": "Advanced File Cleanup, Dedup & Archive v3",
+  "category_id": "file_management_v3",
+  "category_name": "File Management",
+  "description": "Clean up a large shared workspace with 33 files across 5 nested directory trees: recursively scan, detect exact duplicates vs near-duplicates, validate JSON syntax, handle priority conflicts (empty+draft), separate drafts, quarantine malformed files, organize by type, preserve hidden files, and generate 3 internally-consistent reports.",
+  "author": "",
+  "created_at": "2026-02-11",
+  "difficulty": "L3",
+  "tags": [
+    "file organization",
+    "deduplication",
+    "near-duplicate detection",
+    "json validation",
+    "priority conflict resolution",
+    "nested directory traversal",
+    "cross-report consistency",
+    "batch processing",
+    "report generation"
+  ],
+  "mcp": ["filesystem"],
+  "meta_data": {
+    "stateType": "text",
+    "stateContent": "33 files across 5 directory trees (inbox/, downloads/{2026-01,02,03}/, shared/, archive/, root). Traps: 2 exact duplicate pairs, 1 near-duplicate (extra row), 3 malformed JSONs, 1 priority conflict (empty+draft), 4 drafts, 3 empty files, 1 hidden file (.gitignore), 3 preserved .md files.",
+    "stateUrl": null,
+    "stateOriginalUrl": null
+  },
+  "environment": {
+    "platform": "cross-platform",
+    "notes": "33 files total. Expected: 9 CSV + 5 JSON + 4 TXT organized = 18, 4 drafts, 3 quarantined, 3 trashed, 2 duplicates removed, 3 preserved. Near-duplicate Q1_Sales_Report_v2.csv must NOT be deduped. DRAFT_empty.txt must go to trash (Rule A > Rule B). Reports must be cross-consistent.",
+    "python_version": ">=3.8"
+  }
+}

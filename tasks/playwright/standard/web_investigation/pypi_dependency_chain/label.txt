@@ -1,0 +1,10 @@
+FlaskDepCount|6
+FlaskDeps|blinker,click,importlib-metadata,itsdangerous,Jinja2,Werkzeug
+FlaskPython|>=3.8
+WerkzeugSummary|The comprehensive WSGI web application library.
+WerkzeugPython|>=3.8
+WerkzeugDeps|MarkupSafe
+Jinja2Summary|A very fast and expressive template engine.
+Jinja2Python|>=3.7
+Jinja2Deps|MarkupSafe
+SharedTransitiveDep|MarkupSafe

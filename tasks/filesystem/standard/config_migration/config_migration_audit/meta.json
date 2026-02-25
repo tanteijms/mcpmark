@@ -1,0 +1,31 @@
+{
+  "task_id": "config_migration_audit",
+  "task_name": "Configuration Migration & Audit",
+  "category_id": "config_migration",
+  "category_name": "File Management",
+  "description": "Migrate 8 INI configuration files to YAML format with type preservation, skip deprecated sections, detect cross-file key conflicts, back up originals, and generate deprecated log, changelog, and conflicts report.",
+  "author": "",
+  "created_at": "2026-02-11",
+  "difficulty": "L3",
+  "tags": [
+    "format conversion",
+    "configuration management",
+    "type preservation",
+    "conditional logic",
+    "conflict detection",
+    "batch processing",
+    "report generation"
+  ],
+  "mcp": ["filesystem"],
+  "meta_data": {
+    "stateType": "text",
+    "stateContent": "workspace/\n├── configs/\n│   ├── database.ini     (5 sections, 1 deprecated)\n│   ├── server.ini       (4 sections, 1 deprecated)\n│   ├── cache.ini        (3 sections, 0 deprecated)\n│   ├── auth.ini         (4 sections, 1 deprecated)\n│   ├── logging.ini      (4 sections, 1 deprecated)\n│   ├── monitoring.ini   (4 sections, 0 deprecated)\n│   ├── notifications.ini(4 sections, 1 deprecated)\n│   └── legacy_api.ini   (3 sections, ALL deprecated)\n├── migration_spec.md\n└── README.md",
+    "stateUrl": null,
+    "stateOriginalUrl": null
+  },
+  "environment": {
+    "platform": "cross-platform",
+    "notes": "8 INI files with total 31 sections (8 deprecated). Cross-file conflicts on keys: port, host, password, connection_timeout, enabled. Type preservation critical for integers, booleans, floats. YAML output checked via text pattern matching (no PyYAML dependency).",
+    "python_version": ">=3.8"
+  }
+}

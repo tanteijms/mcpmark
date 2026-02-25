@@ -181,7 +181,106 @@ class ModelConfig:
             "provider": "zhipu",
             "api_key_var": "OPENROUTER_API_KEY",
             "litellm_input_model_name": "openrouter/z-ai/glm-4.5",
-        }
+        },
+        # 火山方舟 (Volcengine Ark)
+        "doubao-1.5-pro": {
+            "provider": "volcengine",
+            "api_key_var": "VOLCENGINE_API_KEY",
+            "base_url_var": "VOLCENGINE_BASE_URL",
+            "litellm_input_model_name": "openai/doubao-1-5-pro-32k",
+        },
+        "doubao-1.5-thinking-pro": {
+            "provider": "volcengine",
+            "api_key_var": "VOLCENGINE_API_KEY",
+            "base_url_var": "VOLCENGINE_BASE_URL",
+            "litellm_input_model_name": "openai/doubao-1-5-thinking-pro-32k",
+        },
+        # OpenRouter 通用模型
+        "deepseek-v3": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/deepseek/deepseek-chat",
+        },
+        "gemini-2.0-flash": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/google/gemini-2.0-flash-001",
+        },
+        # ========== Lab 测试用模型 (OpenRouter) ==========
+        "or-gemini-3-pro": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/google/gemini-3-pro-preview",
+        },
+        "or-claude-opus-4.5": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/anthropic/claude-opus-4.5",
+        },
+        "or-qwen3-235b": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/qwen/qwen3-235b-a22b",
+        },
+        # ========== 7-Model SOTA Benchmark (OpenRouter) ==========
+        "or-claude-opus-4.6": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/anthropic/claude-opus-4.6",
+        },
+        "or-gpt-5.2": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/openai/gpt-5.2",
+        },
+        "or-kimi-k2.5": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/moonshotai/kimi-k2.5",
+        },
+        "or-glm-4.7": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/z-ai/glm-4.7",
+        },
+        "or-seed-1.6": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/bytedance-seed/seed-1.6",
+        },
+        "or-qwen3-coder": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/qwen/qwen3-coder",
+        },
+        "or-glm-5": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/z-ai/glm-5",
+        },
+        "or-qwen3-coder-next": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/qwen/qwen3-coder-next",
+        },
+        "or-qwen3.5": {
+            "provider": "openrouter",
+            "api_key_var": "OPENROUTER_API_KEY",
+            "litellm_input_model_name": "openrouter/qwen/qwen3.5-397b-a17b",
+        },
+        # ========== 火山方舟 豆包 ==========
+        "ark-doubao-seed": {
+            "provider": "volcengine",
+            "api_key_var": "ARK_API_KEY",
+            "base_url_var": "ARK_BASE_URL",
+            "litellm_input_model_name": "openai/ep-m-20260116104552-sfbgz",
+        },
+        "doubao-seed-2-pro": {
+            "provider": "volcengine",
+            "api_key_var": "ARK_API_KEY",
+            "base_url_var": "ARK_BASE_URL",
+            "litellm_input_model_name": "openai/doubao-seed-2-0-pro-260215",
+        },
     }
 
     def __init__(self, model_name: str):

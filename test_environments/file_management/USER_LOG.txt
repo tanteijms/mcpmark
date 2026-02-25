@@ -1,0 +1,4 @@
+2026-01-15 09:00:12 - User admin logged in
+2026-01-15 09:15:43 - User admin accessed dashboard
+2026-01-15 10:02:07 - User admin exported report
+2026-01-15 11:30:00 - User admin logged out

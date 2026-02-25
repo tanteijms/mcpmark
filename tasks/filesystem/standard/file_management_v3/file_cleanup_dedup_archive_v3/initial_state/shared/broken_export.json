@@ -1,0 +1,12 @@
+{
+  "export_id": "EXP-20260201",
+  "source": "legacy_database",
+  "tables": [
+    "users",
+    "transactions",
+    "products",
+  ],
+  "format": "json",
+  "status": "failed",
+  "error": "Connection timeout after 30s",
+}

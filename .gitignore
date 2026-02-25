@@ -17,7 +17,7 @@ logs
 logs/*
 .DS_Store
 notion-sdk-py/
-github_state/*
+# github_state/*
 
 # for playwright cookies
 notion_state.json
@@ -233,5 +233,5 @@ __marimo__/
 
 # MCPMark backup directories
 .mcpmark_backups/*
-test_environments/
-postgres_state
+# test_environments/
+# postgres_state

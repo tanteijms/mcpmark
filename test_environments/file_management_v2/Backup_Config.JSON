@@ -1,0 +1,16 @@
+{
+  "backup": {
+    "schedule": "daily",
+    "time": "02:00",
+    "retention_days": 30,
+    "destinations": [
+      {"type": "s3", "bucket": "company-backups-prod", "region": "us-east-1"},
+      {"type": "local", "path": "/mnt/backup/daily"}
+    ]
+  },
+  "notifications": {
+    "on_success": false,
+    "on_failure": true,
+    "email": "ops-team@company.com"
+  }
+}

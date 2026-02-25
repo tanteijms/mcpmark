@@ -1,0 +1,21 @@
+{
+  "app_name": "DataPipeline",
+  "version": "2.4.1",
+  "database": {
+    "host": "db.internal.company.com",
+    "port": 5432,
+    "name": "analytics_prod",
+    "pool_size": 20,
+    "ssl_enabled": true
+  },
+  "cache": {
+    "provider": "redis",
+    "ttl_seconds": 3600,
+    "max_memory_mb": 512
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "output": "/var/log/datapipeline/app.log"
+  }
+}

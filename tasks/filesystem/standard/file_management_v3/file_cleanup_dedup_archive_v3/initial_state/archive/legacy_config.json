@@ -1,0 +1,16 @@
+{
+  'api_version': '1.0',
+  'base_url': 'https://legacy.company.com/api',
+  'auth': {
+    'type': 'basic',
+    'username': 'legacy_service',
+    'password': 'L3g@cyP@ss!'
+  },
+  'endpoints': {
+    'users': '/v1/users',
+    'products': '/v1/products',
+    'orders': '/v1/orders'
+  },
+  'timeout': 30,
+  'deprecated': true
+}

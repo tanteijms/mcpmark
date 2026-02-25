@@ -1,0 +1,22 @@
+{
+  "report_period": "Q1 2026",
+  "generated_at": "2026-03-31T23:59:59Z",
+  "metrics": {
+    "total_revenue": 1245000.50,
+    "total_orders": 3847,
+    "average_order_value": 323.62,
+    "return_rate": 0.034,
+    "customer_satisfaction": 4.6
+  },
+  "top_products": [
+    {"name": "Widget A", "units": 1250, "revenue": 375000.00},
+    {"name": "Gadget X", "units": 890, "revenue": 356000.00},
+    {"name": "Widget B", "units": 720, "revenue": 216000.00}
+  ],
+  "regional_breakdown": {
+    "North": 312500.00,
+    "South": 298750.00,
+    "East": 345000.00,
+    "West": 288750.50
+  }
+}

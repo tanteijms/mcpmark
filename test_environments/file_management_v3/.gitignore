@@ -1,0 +1,19 @@
+# Build artifacts
+*.pyc
+__pycache__/
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

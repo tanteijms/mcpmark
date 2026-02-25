@@ -1,0 +1,24 @@
+DRAFT - Platform Migration Proposal v1
+
+Author: Alice Chen
+Date: December 2025
+Status: Superseded by v2
+
+Executive Summary:
+This proposal outlines the initial plan for migrating our analytics platform
+from the legacy monolithic architecture to a microservices-based system.
+
+Key Objectives:
+1. Decompose monolith into 5 core microservices
+2. Migrate from PostgreSQL 12 to PostgreSQL 16
+3. Replace custom caching with Redis Cluster
+4. Implement event-driven architecture with Kafka
+
+Timeline Estimate:
+- Phase 1 (Q1 2026): Backend decomposition
+- Phase 2 (Q2 2026): Data migration
+- Phase 3 (Q3 2026): Frontend modernization
+
+Budget Estimate: $750,000 (revised down to $485,000 in v2)
+
+NOTE: This version is outdated. See DRAFT_budget_proposal.txt for current numbers.

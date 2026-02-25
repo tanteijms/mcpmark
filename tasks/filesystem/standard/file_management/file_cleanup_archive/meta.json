@@ -1,0 +1,29 @@
+{
+  "task_id": "file_cleanup_archive",
+  "task_name": "File Cleanup and Archive",
+  "category_id": "file_management",
+  "category_name": "File Management",
+  "description": "Organize a messy downloads directory by creating typed subdirectories, moving and renaming files by extension, deleting empty/whitespace-only files, and generating an inventory report.",
+  "author": "",
+  "created_at": "2026-02-09",
+  "difficulty": "L2",
+  "tags": [
+    "file organization",
+    "batch processing",
+    "content transformation"
+  ],
+  "mcp": [
+    "filesystem"
+  ],
+  "meta_data": {
+    "stateType": "text",
+    "stateContent": "file_management/\n├── Sales Report.csv\n├── monthly_report.csv\n├── Data Export.csv\n├── empty_file.csv\n├── Config Settings.json\n├── api_response.json\n├── summary.JSON\n├── USER_LOG.txt\n├── NOTES.txt\n├── Meeting Notes.TXT\n├── blank.txt\n├── README.md",
+    "stateUrl": null,
+    "stateOriginalUrl": null
+  },
+  "environment": {
+    "platform": "cross-platform",
+    "notes": "File sizes calculated as bytes/1024 (binary KB). Tested on Windows 10/11. Works on Linux/macOS without modification.",
+    "python_version": ">=3.8"
+  }
+}
