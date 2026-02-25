@@ -27,15 +27,22 @@ LLM Agent MCP 工具调用能力基准测试 — 覆盖 Filesystem / PostgreSQL 
 
 ## 任务列表
 
+难度分级基于 Qwen3 Coder 实测通过率：**easy**（≥50%）/ **standard**（<50%，且 SOTA 可通过）
+
+### easy 套件（`--task-suite easy`）
+
 | # | Task ID | MCP 服务 | 任务名称 | 难度 | Qwen3 Coder | SOTA 最高 |
 |---|---------|----------|---------|------|-------------|-----------|
-| 1 | file-1-v1 | Filesystem | 文件清理与归档 | L1 | 3/4 (75%) | Claude/GPT/Gemini 4/4 |
-| 2 | file-1-v2 | Filesystem | 文件清理、去重与归档（进阶） | L2 | 1/4 (25%) | Claude/GPT 4/4 |
-| 3 | file-1-v3 | Filesystem | 文件清理、去重与归档（高阶） | L3 | 0/4 (0%) | Claude/GPT 4/4 |
-| 4 | file-3 | Filesystem | 配置迁移与审计 | L3 | 1/4 (25%) | Claude/GPT/Gemini 4/4 |
-| 5 | postgre-1 | PostgreSQL | 客户分析数据管道 | L3 | 3/4 (75%) | Claude 4/4, GLM-5 4/4 |
-| 6 | github-1-v3 | GitHub | 仓库健康审计与修复 | L3 | 2/4 (50%) | 全部 1/4 |
-| 7 | pw-1-v2 | Playwright | PyPI 依赖链调查 | L3 | 1/4 (25%) | Claude/GPT/Gemini 4/4 |
+| 1 | customer_analytics_pipeline | PostgreSQL | 客户分析数据管道 | L2 | 3/4 (75%) | Claude 4/4, GLM-5 4/4 |
+| 2 | repository_health_audit | GitHub | 仓库健康审计与修复 | L2 | 2/4 (50%) | 全部 1/4 |
+
+### standard 套件（`--task-suite standard`，默认）
+
+| # | Task ID | MCP 服务 | 任务名称 | 难度 | Qwen3 Coder | SOTA 最高 |
+|---|---------|----------|---------|------|-------------|-----------|
+| 3 | file_cleanup_dedup_archive | Filesystem | 文件清理、去重与归档 | L3 | 0/4 (0%) | Claude/GPT 4/4 |
+| 4 | config_migration_audit | Filesystem | 配置迁移与审计 | L3 | 1/4 (25%) | Claude/GPT/Gemini 4/4 |
+| 5 | pypi_dependency_chain | Playwright | PyPI 依赖链调查 | L3 | 0/4 (0%) | Claude/GPT/Gemini 4/4 |
 
 SOTA 对比模型：Claude Opus 4.6 / GPT 5.2 / Gemini 3 Pro / GLM-5
 
@@ -69,24 +76,20 @@ mcpmark/
 │   ├── evaluator.py            # 评测器（调用 verify.py）
 │   └── ...
 │
-├── tasks/                      # 评测任务
-│   ├── filesystem/standard/    # 4 个 Filesystem 任务
-│   │   ├── file_management/file_cleanup_archive/
-│   │   ├── file_management_v2/file_cleanup_dedup_archive/
-│   │   ├── file_management_v3/file_cleanup_dedup_archive_v3/
+├── tasks/                      # 评测任务（按 MCP 服务 + 难度套件分层）
+│   ├── filesystem/standard/    # L3 Filesystem 任务（standard 套件）
+│   │   ├── file_management/file_cleanup_dedup_archive/
 │   │   └── config_migration/config_migration_audit/
-│   ├── postgres/standard/      # 1 个 PostgreSQL 任务
+│   ├── postgres/easy/          # L2 PostgreSQL 任务（easy 套件）
 │   │   └── chinook/customer_analytics_pipeline/
-│   ├── github/standard/        # 1 个 GitHub 任务
-│   │   └── mcpmark-cicd/repository_health_audit_v3/
-│   └── playwright/standard/    # 1 个 Playwright 任务
+│   ├── github/easy/            # L2 GitHub 任务（easy 套件）
+│   │   └── mcpmark-cicd/repository_health_audit/
+│   └── playwright/standard/    # L3 Playwright 任务（standard 套件）
 │       └── web_investigation/pypi_dependency_chain/
 │
 ├── test_environments/          # Filesystem 任务的初始测试文件
-│   ├── file_management/        # → file-1-v1 的初始文件
-│   ├── file_management_v2/     # → file-1-v2 的初始文件
-│   ├── file_management_v3/     # → file-1-v3 的初始文件
-│   └── config_migration/       # → file-3 的初始文件
+│   ├── file_management/        # → file_cleanup_dedup_archive 的初始文件
+│   └── config_migration/       # → config_migration_audit 的初始文件
 ├── github_state/               # GitHub 任务的仓库初始状态快照
 └── postgres_state/             # PostgreSQL 备份文件（框架自动下载）
 ```
@@ -460,22 +463,24 @@ pixi run python -m pipeline `
 
 添加新模型：在 `model_config.py` 的 `MODEL_CONFIGS` 字典中添加条目，指定 `provider`、`api_key_var`、`litellm_input_model_name`，并在 `.mcp_env` 中配置对应的 API Key。
 
-### 所有 7 个任务的运行命令
+### 所有 5 个任务的运行命令
 
 ```bash
-# === Filesystem（4 个任务，无需外部服务） ===
-pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management/file_cleanup_archive --models or-qwen3-coder --k 4
-pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management_v2/file_cleanup_dedup_archive --models or-qwen3-coder --k 4
-pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management_v3/file_cleanup_dedup_archive_v3 --models or-qwen3-coder --k 4
+# === easy 套件（L2，--task-suite easy） ===
+
+# PostgreSQL（需要 PG 服务 + pg_restore）
+pixi run python -m pipeline --exp-name exp --mcp postgres --task-suite easy --tasks chinook/customer_analytics_pipeline --models or-qwen3-coder --k 4
+
+# GitHub（需要 Docker + PAT）
+pixi run python -m pipeline --exp-name exp --mcp github --task-suite easy --tasks mcpmark-cicd/repository_health_audit --models or-qwen3-coder --k 4
+
+# === standard 套件（L3，--task-suite standard，默认） ===
+
+# Filesystem（无需外部服务）
+pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management/file_cleanup_dedup_archive --models or-qwen3-coder --k 4
 pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks config_migration/config_migration_audit --models or-qwen3-coder --k 4
 
-# === PostgreSQL（需要 PG 服务 + pg_restore） ===
-pixi run python -m pipeline --exp-name exp --mcp postgres --tasks chinook/customer_analytics_pipeline --models or-qwen3-coder --k 4
-
-# === GitHub（需要 Docker + PAT） ===
-pixi run python -m pipeline --exp-name exp --mcp github --tasks mcpmark-cicd/repository_health_audit_v3 --models or-qwen3-coder --k 4
-
-# === Playwright（需要 Chromium） ===
+# Playwright（需要 Chromium）
 pixi run python -m pipeline --exp-name exp --mcp playwright --tasks web_investigation/pypi_dependency_chain --models or-qwen3-coder --k 4
 ```
 
@@ -485,7 +490,7 @@ pixi run python -m pipeline --exp-name exp --mcp playwright --tasks web_investig
 mkdir -p log
 nohup pixi run python -m pipeline \
   --exp-name exp --mcp filesystem \
-  --tasks file_management/file_cleanup_archive \
+  --tasks file_management/file_cleanup_dedup_archive \
   --models or-qwen3-coder --k 4 \
   > log/run.log 2>&1 &
 ```
@@ -498,9 +503,9 @@ nohup pixi run python -m pipeline \
 # ❌ 错误 — 会报 0/0 tasks
 --tasks category_a/task1,category_b/task2
 
-# ✅ 正确 — 用 && 串联
-pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management/file_cleanup_archive --models or-qwen3-coder --k 4 && \
-pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management_v2/file_cleanup_dedup_archive --models or-qwen3-coder --k 4
+# ✅ 正确 — 用 && 串联（standard 套件两个 filesystem 任务）
+pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks file_management/file_cleanup_dedup_archive --models or-qwen3-coder --k 4 && \
+pixi run python -m pipeline --exp-name exp --mcp filesystem --tasks config_migration/config_migration_audit --models or-qwen3-coder --k 4
 ```
 
 ### 结果目录
@@ -761,29 +766,35 @@ pixi run python -m pipeline \
 
 ### Qwen3 Coder vs SOTA 对比（k=4）
 
-| 任务 | Qwen3 Coder | Claude Opus 4.6 | GPT 5.2 | Gemini 3 Pro | GLM-5 |
-|------|-------------|-----------------|---------|-------------|-------|
-| file-1-v1 文件清理归档 | **3/4** | 4/4 | 4/4 | 4/4 | 3/4 |
-| file-1-v2 去重归档（进阶） | 1/4 | **4/4** | **4/4** | 2/4 | 4/4 |
-| file-1-v3 去重归档（高阶） | 0/4 | **4/4** | **4/4** | 3/4 | 2/4 |
-| file-3 配置迁移审计 | 1/4 | **4/4** | **4/4** | **4/4** | 3/4 |
-| postgre-1 客户分析管道 | **3/4** | **4/4** | 0/4 | 0/4 | **4/4** |
-| github-1-v3 仓库健康审计 | **2/4** | 1/4 | 1/4 | 1/4 | 1/4 |
-| pw-1-v2 PyPI 依赖链 | 1/4 | **4/4** | **4/4** | **4/4** | 4/4 |
+**easy 套件（L2）**
+
+| 任务 | 套件 | Qwen3 Coder | Claude Opus 4.6 | GPT 5.2 | Gemini 3 Pro | GLM-5 |
+|------|------|-------------|-----------------|---------|-------------|-------|
+| customer_analytics_pipeline | easy | **3/4** | **4/4** | 0/4 | 0/4 | **4/4** |
+| repository_health_audit | easy | **2/4** | 1/4 | 1/4 | 1/4 | 1/4 |
+
+**standard 套件（L3）**
+
+| 任务 | 套件 | Qwen3 Coder | Claude Opus 4.6 | GPT 5.2 | Gemini 3 Pro | GLM-5 |
+|------|------|-------------|-----------------|---------|-------------|-------|
+| file_cleanup_dedup_archive | standard | 0/4 | **4/4** | **4/4** | 3/4 | 2/4 |
+| config_migration_audit | standard | 1/4 | **4/4** | **4/4** | **4/4** | 3/4 |
+| pypi_dependency_chain | standard | 0/4 | **4/4** | **4/4** | **4/4** | 4/4 |
 
 ### Qwen3 Coder 通过率梯度
 
 ```
-file-1-v1 (75%) = postgre-1 (75%) > github-v3 (50%) > file-1-v2 (25%) = file-3 (25%) = pw-1-v2 (25%) > file-1-v3 (0%)
+[easy]    customer_analytics_pipeline (75%) > repository_health_audit (50%)
+[standard] config_migration_audit (25%) > file_cleanup_dedup_archive (0%) = pypi_dependency_chain (0%)
 ```
 
-### 训练数据产出（7 任务 × Qwen3 Coder × 4 轮）
+### 训练数据产出（5 任务 × Qwen3 Coder × 4 轮）
 
 | 类型 | 数量 |
 |------|------|
-| 成功 trajectory (SFT 正样本) | 11 条 |
-| 失败 trajectory (RL 负样本) | 17 条 |
-| 合计 | 28 条 |
+| 成功 trajectory (SFT 正样本) | 6 条 |
+| 失败 trajectory (RL 负样本) | 14 条 |
+| 合计 | 20 条 |
 
 ---
 

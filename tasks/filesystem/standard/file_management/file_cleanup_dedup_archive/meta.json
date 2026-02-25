@@ -1,6 +1,6 @@
 {
-  "task_id": "file_cleanup_dedup_archive_v3",
-  "task_name": "Advanced File Cleanup, Dedup & Archive v3",
+  "task_id": "file_cleanup_dedup_archive",
+  "task_name": "Advanced File Cleanup, Dedup & Archive",
   "category_id": "file_management_v3",
   "category_name": "File Management",
   "description": "Clean up a large shared workspace with 33 files across 5 nested directory trees: recursively scan, detect exact duplicates vs near-duplicates, validate JSON syntax, handle priority conflicts (empty+draft), separate drafts, quarantine malformed files, organize by type, preserve hidden files, and generate 3 internally-consistent reports.",
